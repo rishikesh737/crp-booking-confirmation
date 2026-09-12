@@ -1,0 +1,449 @@
+/* ============================================================
+   Resort booking tool — styles
+   Plain CSS, no frameworks, no fonts to download (Georgia and
+   the system sans-serif are on every device already).
+
+   THE LOOK: warm cream background, deep palm-green header with
+   elegant serif branding, terracotta for the main action, sage
+   for success. Large inputs and buttons on purpose — the form
+   is often used on a tablet or phone.
+   ============================================================ */
+
+/* --- Theme colors (one place to tweak the palette) ------------ */
+
+:root {
+  --cream:      #faf6ef;   /* page background — warm off-white   */
+  --card:       #fffdf8;   /* form card                           */
+  --ink:        #3d3229;   /* main text — warm dark brown        */
+  --muted:      #7c6f60;   /* hints, secondary text              */
+  --line:       #e5dccb;   /* borders — warm sand                */
+
+  --palm:       #2d5240;   /* deep palm green (header, links)    */
+  --palm-dark:  #223f31;
+
+  --terra:      #c05f3c;   /* terracotta — primary button        */
+  --terra-dark: #a84d2f;
+  --terra-soft: #fdf0ea;   /* terracotta-tinted background       */
+
+  --sage:       #e7efe6;   /* success background — light sage    */
+  --sage-line:  #b7ccba;
+  --sage-ink:   #2a5240;
+
+  --error:      #a83a32;   /* warm red, easier on the eye than   */
+  --error-soft: #fdeeec;   /* pure red                           */
+
+  --whatsapp:   #1f8a70;   /* deep WhatsApp green                */
+  --whatsapp-dark: #186e59;
+}
+
+/* --- Page basics ------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Arial, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+}
+
+/* --- Top bar ------------------------------------------------ */
+
+.top-bar {
+  background: var(--palm);
+  color: #fff;
+  padding: 28px 16px 24px;
+  text-align: center;
+}
+
+.header-kicker {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  font-size: 1.9rem;
+  letter-spacing: 0.01em;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  font-size: 1.02rem;
+  font-style: italic;
+  font-family: Georgia, serif;
+  opacity: 0.92;
+}
+
+/* Thin lines + a small ornament, centred under the title. */
+.header-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1rem;
+}
+
+.header-ornament span {
+  display: block;
+  height: 1px;
+  width: 64px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* --- Form card ---------------------------------------------- */
+
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 26px 24px 24px;
+  margin-top: 20px;
+  box-shadow: 0 6px 24px rgba(61, 50, 41, 0.07);
+}
+
+/* --- Form fields -------------------------------------------- */
+
+.field {
+  margin-bottom: 20px;
+}
+
+/* Date + package / headcount pairs sit side by side on wide
+   screens, stack on phones. A faint sage tint shows the two
+   fields belong together. */
+.field-row {
+  display: flex;
+  gap: 14px;
+  background: #f4f7f1;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.field-row .field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+
+.req {
+  color: var(--terra);
+  font-weight: 700;
+}
+
+input, select, textarea {
+  width: 100%;
+  min-height: 48px;             /* touch-friendly height */
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--ink);
+  background: #fff;
+  border: 1.5px solid #ccc4b2;
+  border-radius: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Clear "you are here" feedback when a field is active. */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--palm);
+  box-shadow: 0 0 0 3px rgba(45, 82, 64, 0.18);
+}
+
+/* --- Phone field with fixed +91 badge ------------------------ */
+
+.phone-wrap {
+  display: flex;
+  align-items: stretch;
+}
+
+.phone-prefix {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  min-height: 48px;
+  border: 1.5px solid #ccc4b2;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  background: #f0ece2;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.phone-input {
+  border-radius: 0 10px 10px 0;
+  flex: 1;
+}
+
+.phone-wrap:focus-within .phone-prefix {
+  border-color: var(--palm);
+  color: var(--ink);
+}
+
+/* --- Validation states --------------------------------------- */
+
+/* Highlight fields that failed validation */
+input.invalid, select.invalid {
+  border-color: var(--error);
+  background: var(--error-soft);
+}
+
+/* Inline error under a field */
+.error {
+  margin: 6px 0 0;
+  color: var(--error);
+  font-size: 0.9rem;
+}
+
+/* Quiet helper text under a field */
+.hint {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.field .error + .hint,
+.field .hint + .error {
+  margin-top: 4px;
+}
+
+/* --- Buttons ------------------------------------------------- */
+
+button, .btn {
+  display: block;
+  width: 100%;
+  min-height: 52px;             /* comfortable touch target */
+  padding: 15px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.1s ease,
+              box-shadow 0.15s ease;
+}
+
+#submit-btn {
+  background: var(--terra);
+  color: #fff;
+  margin-top: 10px;
+  box-shadow: 0 4px 14px rgba(192, 95, 60, 0.35);
+}
+
+#submit-btn:hover:not(:disabled) {
+  background: var(--terra-dark);
+  transform: translateY(-1px);
+}
+
+#submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+#submit-btn:disabled {
+  background: #d8b7a8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Visible keyboard focus on buttons too. */
+button:focus-visible, .btn:focus-visible {
+  outline: 3px solid rgba(45, 82, 64, 0.55);
+  outline-offset: 2px;
+}
+
+/* WhatsApp send buttons — deep WhatsApp green */
+.btn-whatsapp {
+  background: var(--whatsapp);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(31, 138, 112, 0.3);
+}
+
+.btn-whatsapp:hover {
+  background: var(--whatsapp-dark);
+  transform: translateY(-1px);
+}
+
+/* Owner button gets a palm-green shade so the two are told
+   apart at a glance, while staying in the same family. */
+#send-owner-btn {
+  background: var(--palm);
+  box-shadow: 0 4px 14px rgba(45, 82, 64, 0.3);
+}
+
+#send-owner-btn:hover {
+  background: var(--palm-dark);
+}
+
+/* Tertiary — deliberately quiet next to the primary action. */
+#new-booking-btn {
+  background: #efe9dd;
+  color: var(--ink);
+  margin-top: 26px;
+  min-height: 48px;
+  font-size: 0.98rem;
+}
+
+#new-booking-btn:hover {
+  background: #e5ddcc;
+}
+
+/* --- Status messages ----------------------------------------- */
+
+.status {
+  margin: 12px 0 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+.alert {
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+
+.alert-error {
+  background: var(--error-soft);
+  border: 1px solid #e5b3ad;
+  color: var(--error);
+}
+
+/* --- Confirmation panel --------------------------------------- */
+
+.confirm-hero {
+  background: var(--sage);
+  border: 1px solid var(--sage-line);
+  border-radius: 14px;
+  padding: 22px 16px;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.confirm-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--palm);
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.confirm-title {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-weight: 500;
+  font-size: 1.55rem;
+  color: var(--sage-ink);
+}
+
+.confirm-sub {
+  margin: 6px 0 0;
+  color: var(--sage-ink);
+}
+
+.confirm-sub strong {
+  font-family: Georgia, serif;
+  letter-spacing: 0.03em;
+}
+
+#confirmation-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 26px 24px 24px;
+  box-shadow: 0 6px 24px rgba(61, 50, 41, 0.07);
+}
+
+.preview-heading {
+  margin: 22px 0 8px;
+  font-size: 1.05rem;
+  font-family: Georgia, serif;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* Each preview looks like a message card. */
+.message-preview {
+  background: #f7f4ec;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  white-space: pre-wrap;        /* keeps the line breaks of the message */
+  font-family: inherit;
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;      /* long URLs/words wrap instead of overflow */
+  box-shadow: inset 0 1px 3px rgba(61, 50, 41, 0.05);
+}
+
+.send-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.send-buttons .btn {
+  flex: 1;
+}
+
+.send-hint {
+  text-align: center;
+}
+
+/* --- Small screens (phones) ----------------------------------- */
+
+@media (max-width: 480px) {
+  .top-bar h1 {
+    font-size: 1.5rem;
+  }
+
+  .field-row {
+    flex-direction: column;     /* stack the paired fields */
+    gap: 16px;
+    padding: 14px 12px;
+  }
+
+  .form-card,
+  #confirmation-panel {
+    padding: 20px 16px 18px;
+  }
+
+  .send-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Makes the page usable at phone/tablet width instead of
+       showing a zoomed-out desktop layout. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Booking — Your Resort Name</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="top-bar">
+    <p class="header-kicker">Resort Bookings</p>
+    <h1 id="resort-name">Your Resort Name</h1>
+    <p class="subtitle">Reserve Your Stay</p>
+    <!-- Decorative palm divider — pure CSS, no images to load. -->
+    <div class="header-ornament" aria-hidden="true"><span></span>❧<span></span></div>
+  </header>
+
+  <main>
+
+    <!-- ==================== BOOKING FORM ==================== -->
+    <form id="booking-form" class="form-card" novalidate>
+      <!-- novalidate: we do our own error messages instead of the
+           browser's built-in bubbles, so they all look the same. -->
+
+      <div class="field">
+        <label for="guest_name">Guest name <span class="req">*</span></label>
+        <input type="text" id="guest_name" name="guest_name"
+               autocomplete="off" placeholder="e.g. Rajesh Sharma">
+        <p class="error" id="guest_name-error" hidden></p>
+      </div>
+
+      <div class="field">
+        <label for="guest_phone">Guest phone number <span class="req">*</span></label>
+        <!-- The +91 badge is plain text, not part of the input, so it
+             can't be deleted. The receptionist types only the 10-digit
+             number; "91" is added automatically when sending. -->
+        <div class="phone-wrap">
+          <span class="phone-prefix" aria-hidden="true">+91</span>
+          <input type="tel" id="guest_phone" name="guest_phone" class="phone-input"
+                 inputmode="numeric" autocomplete="off" maxlength="10"
+                 placeholder="98765 43210">
+        </div>
+        <p class="hint">10 digits, without country code</p>
+        <p class="error" id="guest_phone-error" hidden></p>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="check_in_date">Check-in date <span class="req">*</span></label>
+          <input type="date" id="check_in_date" name="check_in_date">
+          <p class="error" id="check_in_date-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="check_out_date">Check-out date <span class="req">*</span></label>
+          <input type="date" id="check_out_date" name="check_out_date">
+          <p class="error" id="check_out_date-error" hidden></p>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="package_type">Package type <span class="req">*</span></label>
+          <select id="package_type" name="package_type">
+            <option value="">— Choose —</option>
+            <option value="Family">Family</option>
+            <option value="Group">Group</option>
+            <option value="Day Out">Day Out</option>
+          </select>
+          <p class="error" id="package_type-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="headcount">Headcount <span class="req">*</span></label>
+          <input type="number" id="headcount" name="headcount"
+                 min="1" inputmode="numeric" placeholder="e.g. 20">
+          <p class="error" id="headcount-error" hidden></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="rooms_needed">Rooms needed</label>
+        <input type="number" id="rooms_needed" name="rooms_needed"
+               min="0" inputmode="numeric" placeholder="Optional">
+        <p class="hint">Leave empty if not applicable</p>
+      </div>
+
+      <div class="field">
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="3"
+                  placeholder="Anything special — e.g. wedding reception, needs stage decoration"></textarea>
+        <p class="hint">Optional</p>
+      </div>
+
+      <div class="field">
+        <label for="receptionist_name">Taken by (your name) <span class="req">*</span></label>
+        <input type="text" id="receptionist_name" name="receptionist_name"
+               autocomplete="off" placeholder="e.g. Priya">
+        <p class="error" id="receptionist_name-error" hidden></p>
+        <p class="hint">Saved on this device — you won't need to retype it next time</p>
+      </div>
+
+      <button type="submit" id="submit-btn">Generate Confirmation</button>
+
+      <!-- Shown only while the booking is being saved (the button is
+           disabled meanwhile so the same booking can't be sent twice). -->
+      <p class="status" id="saving-msg" hidden>Saving booking…</p>
+
+      <!-- Shown if saving failed. The form stays filled in below it,
+           so nothing has to be retyped — just press the button again. -->
+      <div class="alert alert-error" id="error-box" hidden>
+        <strong>Could not save the booking.</strong>
+        <span id="error-detail"></span>
+        <span> The form is still filled in — check your internet connection
+          and press "Generate Confirmation" again.</span>
+      </div>
+
+    </form>
+
+    <!-- ==================== CONFIRMATION PANEL ==================== -->
+    <!-- Hidden until a booking saves successfully. -->
+    <section id="confirmation-panel" hidden>
+
+      <div class="confirm-hero">
+        <div class="confirm-icon" aria-hidden="true">✓</div>
+        <h2 class="confirm-title">Booking confirmed!</h2>
+        <p class="confirm-sub">Booking ID: <strong id="booking-id-text"></strong></p>
+      </div>
+
+      <h2 class="preview-heading">Message to the guest</h2>
+      <pre id="guest-message-preview" class="message-preview"></pre>
+
+      <h2 class="preview-heading">Message to the owner</h2>
+      <pre id="owner-message-preview" class="message-preview"></pre>
+
+      <p class="hint send-hint">
+        WhatsApp will open in a new tab with the message already typed —
+        just press <em>send</em> in WhatsApp.
+      </p>
+
+      <div class="send-buttons">
+        <a id="send-guest-btn" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          Send to Guest
+        </a>
+        <a id="send-owner-btn" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          Send to Owner
+        </a>
+      </div>
+
+      <button type="button" id="new-booking-btn">New booking</button>
+
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
